@@ -1,0 +1,64 @@
+{% extends "document.html" %}
+
+{% block body %}
+<div id="vApp" v-cloak :data-pending="pending" class="col-md-12">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="d-flex align-items-start">
+            <h1 class="h4">Update College</h1>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a href="/admin/college/delete/{{college.id}}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <div></div>
+    <div class="tab-content p-3">
+        <!-- Update -->
+        <form action="" method="post">
+            <input type="hidden" name="acsrf" value="{{acsrf}}">
+            <input type="hidden" name="id" value="{{college.id}}">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input name="name" type="text" value="{{college.name}}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="code">Code</label>
+                <input name="code" type="text" value="{{college.code}}" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    var acsrf = '{{acsrf}}';
+
+    var vApp = new Vue({
+        el: '#vApp',
+        delimiters: ["${", "}"],
+        mixins: [
+        ],
+        data: {
+            pending: false,
+        },
+        mounted: function () {
+            const me = this;
+
+
+        },
+        computed: {
+
+        },
+        methods: {
+
+        }
+    });
+</script>
+{% endblock %}

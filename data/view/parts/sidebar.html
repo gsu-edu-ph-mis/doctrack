@@ -1,0 +1,39 @@
+<div id="sidebar" class="sidebar">
+    <div class="d-flex p-3 align-items-center brand">
+        <div class="mr-2">
+            <a href="/">
+                <img height="28" width="28" src="/images/logo-sm.png" alt="logo">
+            </a>
+        </div>
+        <h1>{{CONFIG.app.title}}</h1>
+        <div class="text-right col pr-0">
+            {% include 'parts/btn-toggle.html' %}
+        </div>
+    </div>
+    
+    <ul class="nav flex-column mb-2">
+        
+        <li class="nav-item {{urlPath|active_class([r/^\/admin\/college\/(.)+/], 'expanded')}}" id="nav-item-employees">
+            <a class="nav-link {{urlPath|active_class([r/^\/admin\/college\/(.)+/])}}" href="/admin/college/all">
+                <svg class="mr-2" style="width:19px;height:19px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>Curriculum</title><path fill="currentColor" d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z" /></svg>
+                <span>Colleges</span>
+                <button class="nav-expander" type="button">
+                    {% include 'parts/svg-chevron-down.html' %}
+                    {% include 'parts/svg-chevron-up.html' %}
+                </button>
+            </a>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {{urlPath|active_class([r/^\/admin\/college\/all/])}}" href="/admin/college/all">
+                        View All 
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{urlPath|active_class([r/^\/admin\/college\/create/])}}" href="/admin/college/create">
+                        Create New
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul> 
+</div>

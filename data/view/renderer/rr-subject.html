@@ -1,0 +1,33 @@
+router.post('/admin/subject/create', middlewares.guardRoute(['create_subject']), middlewares.antiCsrfCheck, async (req, res, next) => {
+    try {
+        let data = req.body
+
+        let subject = await req.app.locals.db.models.Subject.create({
+            {% for key, field in fields %}{{key}}: data.{{key}},
+            {% endfor %}
+        });
+
+        flash.ok(req, 'subject', 'Subject created.')
+        res.redirect(`/admin/subject/update/${subject.id}`)
+    } catch (err) {
+        next(err);
+    }
+});
+
+router.get('/admin/subject/update/:subjectId', middlewares.guardRoute(['update_subject']), async (req, res, next) => {
+    try {
+        let subject = await req.app.locals.db.models.Subject.findOne({
+            id: req.params.subjectId
+        });
+        if(!subject){
+            throw new Error('Subject not found.')
+        }
+
+        let data = {
+            subject: subject
+        }
+        res.render('admin/subject/update.html', data);
+    } catch (err) {
+        next(err);
+    }
+});

@@ -1,0 +1,39 @@
+{
+  "name": "doctrack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "set NODE_ENV=dev&& node ./scripts/open.js&& nodemon --ignore data/view/ --ignore data/public/ --ignore data/log/ --ignore data/upload/ index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Nico Amarilla",
+  "license": "MIT",
+  "dependencies": {
+    "acrb": "^0.1.0",
+    "body-parser": "^1.20.2",
+    "bootstrap": "^4.6.2",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.18.3",
+    "express-session": "^1.18.0",
+    "express-session-sequelize": "^2.3.0",
+    "jquery": "^3.7.1",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "mysql2": "^3.9.9",
+    "nunjucks": "^3.2.4",
+    "pigura": "^1.0.1",
+    "redis": "^4.6.14",
+    "sequelize": "^6.37.1",
+    "socket.io": "^4.7.4",
+    "sqlite3": "^5.1.7",
+    "vue": "^2.7.16",
+    "wifi-name": "^3.1.1"
+  },
+  "devDependencies": {
+    "command-line-args": "^5.2.1",
+    "open": "^8.4.2"
+  }
+}

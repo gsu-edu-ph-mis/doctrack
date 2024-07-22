@@ -1,0 +1,316 @@
+{% extends "document-exam.html" %}
+
+{% block body %}
+<div id="vApp" v-cloak>
+    <template v-if="page<3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <template v-if="page==1">
+                        <div class="text-center mt-5">
+                            <h1 class="h1"><img width="250px" src="/images/logo.png" alt="Doctrack"></h1>
+                            <h6 class="h5">The Paperless Exam App</h6>
+                            <p class=" mb-4"><em>By Nico Amarilla</em></p>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <div class="col-4 text-right">
+                                <label for="examineeId" class="flex-grow-1 m-0 text-right">Your Name</label>
+                            </div>
+                            <div class="col-4">
+                                <select v-model="examineeId" name="examineeId" id="examineeId" class="form-control">
+                                    <option value=""></option>
+                                    <option v-for="e in examSession.examinees" v-if="e.status===0" :value="e.id">
+                                        ${e.lastName}, ${e.firstName}</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <button @click="onReady" :disabled="disabled" class="btn btn-success">Take Exam</button>
+                            </div>
+                        </div>
+                    </template>
+                    <template v-if="page==2">
+                        <div class="row">
+                            <div class="col-md-12 pt-5">
+                                <h1 class="h2 text-center mb-5">Exam: ${exam.title}</h1>
+                                <div class="form-row mb-2">
+                                    <div class="col-4">
+                                        <h3 class="h5 text-center">Total</h3>
+                                        <div class="text-center">
+                                            <svg width="50px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <title>List</title>
+                                                <path fill="#0081db"
+                                                    d="M11 15H17V17H11V15M9 7H7V9H9V7M11 13H17V11H11V13M11 9H17V7H11V9M9 11H7V13H9V11M21 5V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V5C3 3.9 3.9 3 5 3H19C20.1 3 21 3.9 21 5M19 5H5V19H19V5M9 15H7V17H9V15Z" />
+                                            </svg>
+                                        </div>
+                                        <p class="text-center">${exam.questions.length} items <br></p>
+
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="text-center">
+                                            <h3 class="h5 text-center">Time</h3>
+                                            <svg width="50px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <title>Time</title>
+                                                <path fill="#0081db"
+                                                    d="M12 20C16.4 20 20 16.4 20 12S16.4 4 12 4 4 7.6 4 12 7.6 20 12 20M12 2C17.5 2 22 6.5 22 12S17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2M12.5 12.8L7.7 15.6L7 14.2L11 11.9V7H12.5V12.8Z" />
+                                            </svg>
+                                        </div>
+                                        <p class="text-center">${exam.questions.length} minutes</p>
+                                    </div>
+                                    <div class="col-4">
+                                        <h3 class="h5 text-center">Rules</h3>
+                                        <div class="text-center">
+                                            <svg width="50px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                <title>Rules</title>
+                                                <path fill="#0081db"
+                                                    d="M12,3C10.73,3 9.6,3.8 9.18,5H3V7H4.95L2,14C1.53,16 3,17 5.5,17C8,17 9.56,16 9,14L6.05,7H9.17C9.5,7.85 10.15,8.5 11,8.83V20H2V22H22V20H13V8.82C13.85,8.5 14.5,7.85 14.82,7H17.95L15,14C14.53,16 16,17 18.5,17C21,17 22.56,16 22,14L19.05,7H21V5H14.83C14.4,3.8 13.27,3 12,3M12,5A1,1 0 0,1 13,6A1,1 0 0,1 12,7A1,1 0 0,1 11,6A1,1 0 0,1 12,5M5.5,10.25L7,14H4L5.5,10.25M18.5,10.25L20,14H17L18.5,10.25Z" />
+                                            </svg>
+                                        </div>
+                                        <ul>
+                                            <li>Multiple choice</li>
+                                            <li>No tab switching</li>
+                                            <li>No screenshot</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <h1 class="h3 mt-5 text-success text-center">Get ready for the exam...</h1>
+
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template v-if="page==3">
+        <header>
+            <div class="container">
+                <nav class="row">
+                    <div class="col-12 pt-3 pb-3">
+                        <h1 class="h6 mb-1">Exam: ${exam.title}</h1>
+                        <h2 class="h6 mb-0">Name: <strong>${name}</strong></h2>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 pt-4 pb-4">
+                    <ol class="questions">
+                        <li v-for="(question, questionIndex) in exam.questions">
+                            <div class="body">
+                                <span class="bullet">${questionIndex + 1}.</span>
+                                <p>${question.text}</p>
+                            </div>
+                            <ol class="choices">
+                                <template v-for="(choice, choiceIndex) in question.choices">
+                                    <li
+                                        :data-selected="choice.selected">
+                                        <span @click="selectChoice(questionIndex, choiceIndex)" class="letter">${getAlphabet(choiceIndex)}.</span>
+                                        <span>${choice.text}</span>
+                                    </li>
+                                </template>
+                            </ol>
+                        </li>
+                    </ol>
+                    <!-- <pre>${results}</pre>
+                    <div>
+                        <ol>
+                            <li v-for="question in results.questions">
+                                ${question.question} <u>${question.answer}</u>
+                            </li>
+                        </ol>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </template>
+</div>
+
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script src="{{app.url}}/js/socket.io.min.js"></script>
+<script>
+    let examSession = {{ examSession|default ({}, true) | stringify | safe}};
+    let exam = {{ exam|default ({}, true) | stringify | safe}};
+    let socket = io("{{SOCKET_URL}}/quiz", {
+        auth: {
+            token: undefined
+        },
+        query: {
+            room: 'room-{{examSession.id}}',
+            examSessionId: examSession.id,
+        }
+    });
+
+    let vApp = new Vue({
+        el: '#vApp',
+        delimiters: ["${", "}"],
+        mixins: [],
+        data: {
+            pending: false,
+            play: false,
+            page: 1,
+            examineeId: 0,
+            examSession: examSession,
+            exam: exam,
+        },
+        computed: {
+            name: function () {
+                const me = this;
+                
+                let examinee = me.examSession.examinees.find(o => {
+                    return o.id == me.examineeId
+                })
+                if(examinee){
+                    return `${examinee.lastName}, ${examinee.firstName}`
+                }
+
+                return ''
+            },
+            results: function () {
+                var me = this;
+                let questions = me.exam.questions.map(q => {
+                    let answers = q.choices.map(c => c.selected )
+                    return {
+                        id: q.id,
+                        question: q.text,
+                        answers: answers
+                    }
+                })
+                let examinee = me.examSession.examinees.find(o => {
+                    return o.id == me.examineeId
+                })
+                return {
+                    examinee: examinee,
+                    questions: questions
+                }
+            },
+            disabled: function () {
+                var me = this;
+                return `${me.name}`.trim() !== '' ? false : true
+            }
+        },
+        mounted: function () {
+            var me = this;
+
+            socket.on("connect", () => {
+                me.connected = true
+                console.log('connected ', socket.id); // x8WIv7-mJelg7on_ALbx
+            });
+
+            socket.on("disconnect", () => {
+                me.connected = false
+                console.log('disconnected ', socket.id); // undefined
+            });
+
+            socket.on("connect_error", (err) => {
+                console.error(err.message);
+                me.page = 1
+                me.$nextTick(function(){
+                    setTimeout(function(){
+                        alert(err)
+                    }, 10)
+                })
+            });
+
+            socket.on('updateExamineeList', (examinees) => {
+                console.log('updateExamineeList: ', examinees);
+                me.examSession.examinees = examinees
+            });
+
+            socket.on('start', () => {
+                me.page = 3
+
+            });
+
+            socket.on('end', () => {
+                me.page = 4
+                me.submit()
+                // document.exitFullscreen();
+            });
+        },
+        methods: {
+            onReady: function () {
+                var me = this;
+
+                socket.auth.token = me.examineeId;
+                socket.disconnect().connect();
+                // document.documentElement.requestFullscreen();
+
+                me.page = 2
+            },
+            getAlphabet: function (choiceIndex) {
+                let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+                return alphabet[choiceIndex]
+            },
+            selectChoice: function (questionIndex, choiceIndex) {
+                const me = this;
+
+                me.exam.questions[questionIndex].choices.forEach((el, i) => {
+                    if (i !== choiceIndex) {
+                        me.exam.questions[questionIndex].choices[i].selected = false
+                    } else {
+                        me.exam.questions[questionIndex].choices[choiceIndex].selected = !me.exam.questions[questionIndex].choices[choiceIndex].selected
+
+                    }
+                })
+
+            },
+            submit: function () {
+                var me = this;
+
+                fetch(`/view/${examSession.id}`, {
+                    method: 'POST',
+                    body: JSON.stringify(me.results),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(async function (response) {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error(await response.text())
+                }).then(function (responseJson) {
+                    //window.location.reload()
+                }).catch(async function (error) {
+                    console.error(error)
+                }).then(function () {
+                    me.pending = false
+                });
+            }
+        }
+    });
+
+
+    // function toggleFullScreen() {
+    //     if (!document.fullscreenElement) {
+    //         document.documentElement.requestFullscreen();
+    //         socket.emit("fullScreen", "requestFullscreen");
+    //     } else if (document.exitFullscreen) {
+    //         document.exitFullscreen();
+    //         socket.emit("fullScreen", "exitFullscreen");
+
+    //     }
+    // }
+
+    // document.addEventListener('visibilitychange', function () {
+    //     if (document.hidden) {
+    //         console.log('leaving tab is not allowed!');
+    //     } else {
+    //         // console.log('well back');
+    //     }
+    // }, false);
+
+    // document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // window.addEventListener('beforeunload', function (e) {
+    //     // Cancel the event
+    //     e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    //     // Chrome requires returnValue to be set
+    //     e.returnValue = '';
+    // });
+</script>
+{% endblock %}

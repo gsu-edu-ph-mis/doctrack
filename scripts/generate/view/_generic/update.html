@@ -1,0 +1,60 @@
+{%raw%}{% extends "document.html" %}{%endraw%}
+
+{%raw%}{% block body %}{%endraw%}
+<div id="vApp" v-cloak :data-pending="pending" class="col-md-12">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div class="d-flex align-items-start">
+            <h1 class="h4">Update {{modelSpaceCase}}</h1>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a href="/{{baseRoute}}/{{modelUrlFriend}}/delete/{%raw%}{{{%endraw%}{{modelVarName}}.id{%raw%}}}{%endraw%}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <div></div>
+    <div class="tab-content p-3">
+        <!-- Update -->
+        <form action="{{formUrl}}" method="post">
+            <input type="hidden" name="acsrf" value="{% raw %}{{acsrf}}{% endraw %}">
+            <input type="hidden" name="id" value="{% raw %}{{{% endraw %}{{modelVarName}}.id}}">
+            {% for key, field in fields %}<div class="form-group">
+                <label for="{{key}}">{{key|start_case}}</label>
+                <input name="{{key}}" type="{{field.inputType}}" value="{%raw%}{{{%endraw%}{{modelVarName}}.{{key}}{%raw%}}}{%endraw%}" class="form-control">
+            </div>
+            {% endfor %}
+            <div class="form-group">
+                <button class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+{%raw%}{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    var acsrf = '{{acsrf}}';
+
+    var vApp = new Vue({
+        el: '#vApp',
+        delimiters: ["${", "}"],
+        mixins: [
+        ],
+        data: {
+            pending: false,
+        },
+        mounted: function () {
+            const me = this;
+
+
+        },
+        computed: {
+
+        },
+        methods: {
+
+        }
+    });
+</script>
+{% endblock %}{%endraw%}

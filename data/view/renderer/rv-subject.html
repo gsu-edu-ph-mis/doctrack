@@ -1,0 +1,28 @@
+<!-- Create -->
+<form action="{{form.url}}" method="post">
+    <input type="hidden" name="acsrf" value="{% raw %}{{acsrf}}{% endraw %}">
+    {% for key, field in fields %}
+    <div class="form-group">
+        <label for="{{key}}">{{key|start_case}}</label>
+        <input name="{{key}}" type="{{field.inputType}}" class="form-control">
+    </div>
+    {% endfor %}
+
+    <div class="form-group">
+        <button class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+<!-- Update -->
+<form action="{{form2.url}}" method="post">
+    <input type="hidden" name="acsrf" value="{% raw %}{{acsrf}}{% endraw %}">
+    <input type="hidden" name="id" value="{% raw %}{{subject.id}}{% endraw %}">
+    {% for key, field in fields %}<div class="form-group">
+        <label for="{{key}}">{{key|start_case}}</label>
+        <input name="{{key}}" type="{{field.inputType}}" value="{%raw%}{{{%endraw%}subject.{{key}}{%raw%}}}{%endraw%}" class="form-control">
+    </div>
+    {% endfor %}
+    <div class="form-group">
+        <button class="btn btn-primary">Update</button>
+    </div>
+</form>
